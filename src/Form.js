@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { reactLocalStorage } from 'reactjs-localstorage';
+import useUndoable from 'use-undoable';
 import './Form.css';
 
 export const FormContext = React.createContext({
-  form: {}
+  form: {}, //contain original values
+  formPast: {} //contain past values
 });
 
 function Form(props) {
-  const { children, submit = () => {}, initialValues } = props;
+  const { children, initialValues } = props;
+  // console.log(children);
+  const unDoAbleOptions = {
+    behavior: 'mergePastReversed',
+    historyLimit: 1 
+} 
+const [
+  form,
+  setForm,
+  {
+      past : pastForm
+  }
+] = useUndoable(initialValues, unDoAbleOptions);
 
-  const [form, setForm] = useState(initialValues);
+  // const [form, setForm] = (initialValues);
 
   const handleFormChange = (event) => {
     // Get the name of the field that caused this change event
@@ -21,21 +36,20 @@ function Form(props) {
       ...form,
       [name]: value
     });
-    console.log(form);
+    // console.log(form);
+    // console.table(pastForm)
+    reactLocalStorage.setObject('adrForm1', form);
   };
 
   return (
     <form className="Form">
       <FormContext.Provider value={{
         form,
+        pastForm,
         handleFormChange
       }}>
         {children}
       </FormContext.Provider>
-
-      <button type="button" onClick={() => submit(form)}>
-        Submit
-      </button>
     </form>
   );
 }

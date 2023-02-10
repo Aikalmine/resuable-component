@@ -12,7 +12,7 @@ function FormInput(props) {
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
 
-  return (
+  return (  
     <div className="FormInput">
       <label>{label}</label>
       <input

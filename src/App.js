@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import './App.css';
-import Form from './Form';
+import Form, { FormContext } from './Form';
+// import {FormContext} from './Form';
 import FormInput from './FormInput';
+import Global from './global';
 
 function App() {
-  const [message, setMessage] = useState('');
+ 
 
   const initialValues = {
     firstName: '',
@@ -13,15 +15,13 @@ function App() {
     password: '',
   };
 
-  const submit = (form) => {
-    setMessage(`Thanks for signing up, ${form.firstName} ${form.lastName}! We've sent you an email to ${form.emailAddress}.`);
-  };
+
 
   return (
     <div className="App">
-      <h1>Sign Up</h1>
+      <h3>Form undoable & Local Storage</h3>
 
-      <Form submit={submit} initialValues={initialValues}>
+      <Form  initialValues={initialValues}>
         <FormInput 
           label="First Name" 
           name="firstName" />
@@ -36,11 +36,11 @@ function App() {
           label="Password" 
           type="password" 
           name="password" />
+            <Global/>
       </Form>
+    
 
-      <p>{message}</p>
-
-      <h2>Log In</h2>
+      {/* <h2>Log In</h2>
       <Form
         submit={(form) => {
           alert(`Logged in as ${form.username}!`);
@@ -55,7 +55,7 @@ function App() {
         <FormInput
           label="Password"
           name="password" />
-      </Form>
+      </Form> */}
     </div>
   );
 }
